@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melanoma Detection (Demo)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Melanoma Detection</h1>
+        <p class="subtitle">Educational CNN Demo</p>
+    </header>
+
+    <main>
+        <section class="upload-card">
+            <input type="file" id="imageInput" accept="image/*" />
+            <div id="imagePreview"></div>
+
+            <button id="predictBtn" disabled>
+                Analyze Image
+            </button>
+
+            <div id="prediction"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>
+            NOTE: This tool is for educational purposes only and is not a medical diagnosis.
+        </p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
