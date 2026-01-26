@@ -2,6 +2,7 @@ const imageInput = document.getElementById("imageInput");
 const preview = document.getElementById("imagePreview");
 const predictBtn = document.getElementById("predictBtn");
 const prediction = document.getElementById("prediction");
+const API_URL = "https://melanoma-cnn-backend.onrender.com/predict";
 
 let selectedImage = null;
 
@@ -24,19 +25,28 @@ imageInput.addEventListener("change", () => {
 predictBtn.addEventListener("click", async () => {
     prediction.innerHTML = "Analyzing image...";
 
-    // TEMP: fake model response
-    const result = mockModelPrediction();
+    const formData = new FormData();
+    formData.append("image", selectedImage);
 
-    prediction.innerHTML = `
-        <strong>${result.label}</strong><br>
-        Confidence: ${(result.probability * 100).toFixed(1)}%
-    `;
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error("Prediction failed");
+        }
+
+        const result = await response.json();
+
+        prediction.innerHTML = `
+            <strong>${result.prediction}</strong><br>
+            Confidence: ${(result.confidence * 100).toFixed(1)}%
+        `;
+
+    } catch (err) {
+        prediction.innerHTML = "Error getting prediction. Try again later."
+        console.error(err);
+    }
 });
-
-function mockModelPrediction() {
-    const probability = Math.random();
-    return {
-        label: probability > 0.5 ? "Benign" : "Malignant",
-        probability: probability
-    };
-}

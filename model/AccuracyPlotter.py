@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 class AccuracyPlotter:
-    def __init__(self, learn_rate: float, epochs: int, layers: [int], batch_size: int):
+    def __init__(self, learn_rate: float, epochs: int, layers: list, batch_size: int):
         self.epochNumbers = []
         self.training_accuracy = []
         self.test_accuracy = []

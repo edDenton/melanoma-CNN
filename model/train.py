@@ -6,10 +6,11 @@ import numpy as np
 import pandas as pd
 import cv2
 
-from layers import NeuralNetwork, Conv2D, Flatten, DenseLayer
+from cnn.layers import Conv2D, Flatten, DenseLayer
+from cnn.network import NeuralNetwork
 from AccuracyPlotter import AccuracyPlotter
 
-FILEPATH = "melanomaData/"
+FILEPATH = "../melanomaData/"
 
 
 def process_image(image_path):
@@ -94,13 +95,12 @@ def main():
     neural_network = NeuralNetwork(layers=LAYERS, learn_rate=LR, epochs=EPOCHS, accuracy_plotter=dataPlotter)
 
     benign_images, malignant_images, benign_labels, malignant_labels = build_dataset()
-    training_images, training_labels, testing_images, testing_labels = getData(benign_images, malignant_images, benign_labels, malignant_labels)
+    training_images, training_labels, testing_images, testing_labels = getData(benign_images, malignant_images,
+                                                                               benign_labels, malignant_labels)
 
     print("Data has been gathered")
-    neural_network.train(training_images, training_labels, BATCH_SIZE)
+    neural_network.train(training_images, training_labels, BATCH_SIZE, testing_images, testing_labels)
     print("Finished Training")
-    neural_network.test(testing_images, testing_labels)
-    print("Finished Testing")
     dataPlotter.showPlot()
     # seePerformance(neural_network, training_images, training_labels)
 
