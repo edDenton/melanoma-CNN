@@ -4,6 +4,7 @@
 import numpy as np
 import string
 from model.AccuracyPlotter import AccuracyPlotter
+from model.cnn.layers import Conv2D, DenseLayer
 
 
 class NeuralNetwork:
@@ -47,7 +48,7 @@ class NeuralNetwork:
     def train(self, training_images: np.array, training_labels: np.array, batch_size: int, test_images, test_labels):
         num_samples = len(training_labels)
         for epoch in range(self.EPOCHS):
-            if epoch % 50 == 0:
+            if epoch % 2 == 0:
                 print("Epoch Completed: #" + str(epoch))
 
             indices = np.arange(num_samples)
@@ -75,3 +76,28 @@ class NeuralNetwork:
         outputs = self.forward_propagation(test_images)
         self.plotter.appendTestData(epoch=epoch,
                                     accuracy=self.prediction_accuracy(outputs, test_labels))
+
+    def save(self, filepath: str):
+        params = {}
+        layer_index = 0
+
+        for layer in self.LAYERS:
+            if isinstance(layer, Conv2D) or isinstance(layer, DenseLayer):
+                params[f"layer_{layer_index}_weights"] = layer.weights
+                params[f"layer_{layer_index}_biases"] = layer.biases
+            layer_index += 1
+
+        np.savez(filepath, **params)
+
+
+    def load(self, filepath: str):
+        params = np.load(filepath)
+        layer_index = 0
+
+        for layer in self.LAYERS:
+            if isinstance(layer, Conv2D) or isinstance(layer, DenseLayer):
+                layer.weights = params[f"layer_{layer_index}_weights"]
+                layer.biases = params[f"layer_{layer_index}_biases"]
+            layer_index += 1
+
+

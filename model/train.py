@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import cv2
 
-from cnn.layers import Conv2D, Flatten, DenseLayer
+from cnn.layers import Conv2D, Flatten, DenseLayer, MaxPool2D
 from cnn.network import NeuralNetwork
 from AccuracyPlotter import AccuracyPlotter
 
@@ -82,14 +82,23 @@ def getData(b_images, m_images, b_labels, m_labels):
 
 
 def main():
-    LR = 0.005
-    EPOCHS = 350
-    LAYERS = [Conv2D(3, 16, 3, 1, 1),
-              Conv2D(16, 32, 3, 2, 1),
-              Flatten(),
-              DenseLayer(131072, 128, False),
-              DenseLayer(128, 2, True)]
-    BATCH_SIZE = 256
+    LR = 0.001
+    EPOCHS = 200
+    LAYERS = [
+        Conv2D(3, 16, 3, stride=1, padding=1),
+        MaxPool2D(2, 2),
+
+        Conv2D(16, 32, 3, stride=1, padding=1),
+        MaxPool2D(2, 2),
+
+        Conv2D(32, 64, 3, stride=1, padding=1),
+        MaxPool2D(2, 2),
+
+        Flatten(),
+        DenseLayer(16384, 128, False),
+        DenseLayer(128, 2, True)
+    ]
+    BATCH_SIZE = 32
 
     dataPlotter = AccuracyPlotter(learn_rate=LR, epochs=EPOCHS, layers=LAYERS, batch_size=BATCH_SIZE)
     neural_network = NeuralNetwork(layers=LAYERS, learn_rate=LR, epochs=EPOCHS, accuracy_plotter=dataPlotter)
@@ -102,7 +111,11 @@ def main():
     neural_network.train(training_images, training_labels, BATCH_SIZE, testing_images, testing_labels)
     print("Finished Training")
     dataPlotter.showPlot()
-    # seePerformance(neural_network, training_images, training_labels)
+    save = input("Do you want to save the model? (y/n)")
+
+    if save == "y":
+        neural_network.save("model.npz")
+
 
 
 if __name__ == '__main__':
