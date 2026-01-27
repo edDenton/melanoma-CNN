@@ -77,27 +77,27 @@ class NeuralNetwork:
         self.plotter.appendTestData(epoch=epoch,
                                     accuracy=self.prediction_accuracy(outputs, test_labels))
 
+    def is_trainable(self, layer):
+        return hasattr(layer, "weights") and hasattr(layer, "biases")
+
     def save(self, filepath: str):
         params = {}
         layer_index = 0
 
         for layer in self.LAYERS:
-            if isinstance(layer, Conv2D) or isinstance(layer, DenseLayer):
+            if self.is_trainable(layer):
                 params[f"layer_{layer_index}_weights"] = layer.weights
                 params[f"layer_{layer_index}_biases"] = layer.biases
             layer_index += 1
 
         np.savez(filepath, **params)
 
-
     def load(self, filepath: str):
         params = np.load(filepath)
         layer_index = 0
 
         for layer in self.LAYERS:
-            if isinstance(layer, Conv2D) or isinstance(layer, DenseLayer):
+            if self.is_trainable(layer):
                 layer.weights = params[f"layer_{layer_index}_weights"]
                 layer.biases = params[f"layer_{layer_index}_biases"]
             layer_index += 1
-
-
