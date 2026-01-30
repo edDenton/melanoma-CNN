@@ -111,7 +111,7 @@ def main():
     neural_network.train(training_images, training_labels, BATCH_SIZE, testing_images, testing_labels)
     print("Finished Training")
     dataPlotter.showPlot()
-    save = input("Do you want to save the model? (y/n)")
+    save = input("Do you want to save the model? (y/n): ")
 
     if save == "y":
         neural_network.save("model.npz")
