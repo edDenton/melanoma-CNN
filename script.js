@@ -6,6 +6,27 @@ const API_URL = "https://melanoma-cnn-backend.onrender.com/predict";
 
 let selectedImage = null;
 
+async function resizeImage(file) {
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    await img.decode();
+
+    const canvas = document.createElement("canvas");
+    canvas.width = 128;
+    canvas.height = 128;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, 128, 128);
+
+    return new Promise(resolve => {
+        canvas.toBlob(
+            blob => resolve(blob),
+            "image/jpeg",
+            0.9
+        );
+    });
+}
+
 imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
     if (!file) return;
@@ -25,8 +46,10 @@ imageInput.addEventListener("change", () => {
 predictBtn.addEventListener("click", async () => {
     prediction.innerHTML = "Analyzing image...";
 
+    const resized = await resizeImage(selectedImage);
+
     const formData = new FormData();
-    formData.append("image", selectedImage);
+    formData.append("image", resized, "image.jpg");
 
     try {
         const response = await fetch(API_URL, {
