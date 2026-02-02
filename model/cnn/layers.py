@@ -1,4 +1,10 @@
 """
+Coded all layers of a CNN from scratch
+
+Conv2D: Uses im2col and col2im optimized with giant matrix multiplication to vectorize
+MaxPool2D
+Flatten: Turns matrix into size of vector (x, 1)
+DenseLayer
 
 @author: Edward Denton
 """
@@ -36,7 +42,7 @@ class Conv2D:
         for i in range(self.kernel_size):
             for j in range(self.kernel_size):
                 patch = X_pad[:, :, i: i + self.stride * self.H_output: self.stride,
-                        j: j + self.stride * self.W_output: self.stride]
+                j: j + self.stride * self.W_output: self.stride]
                 X_col[:, col_idx * C_in:(col_idx + 1) * C_in, :] = patch.reshape(batch, C_in, -1)
                 col_idx += 1
 
@@ -171,6 +177,7 @@ class MaxPool2D:
 
     def __repr__(self):
         return f"MaxPool2D({self.pool_size}, {self.stride})"
+
 
 class Flatten:
     def __init__(self):

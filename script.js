@@ -1,3 +1,6 @@
+// Author: Edward Denton
+// Calls Render URL with resized 128x128 image to run through the agent to classify
+
 const imageInput = document.getElementById("imageInput");
 const preview = document.getElementById("imagePreview");
 const predictBtn = document.getElementById("predictBtn");

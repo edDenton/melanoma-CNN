@@ -1,5 +1,8 @@
 """
+Processes the dataset from the SIIM ISIC Kaggle competition for detecting melanoma and
+splits the dataset into training and test sets evenly with benign and malignant moles.
 
+@author: Edward Denton
 """
 
 import numpy as np
@@ -115,7 +118,6 @@ def main():
 
     if save == "y":
         neural_network.save("model.npz")
-
 
 
 if __name__ == '__main__':

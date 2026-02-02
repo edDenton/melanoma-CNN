@@ -1,4 +1,5 @@
 """
+Plots accuracy of the model with both of the training and test datasets to visualize how well its performing
 
 @author: Edward Denton
 """

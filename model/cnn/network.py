@@ -1,5 +1,7 @@
 """
+The overhead for the NeuralNetwork, everything is called from here
 
+@author: Edward Denton
 """
 import numpy as np
 import string
