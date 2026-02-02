@@ -12,6 +12,13 @@ Website URL: https://eddenton.github.io/melanoma-CNN/
 
 The backend was hosted on Render: https://melanoma-cnn-backend.onrender.com
 
+Process:
+* Website accepts image -> User presses button
+* Image gets resized to 128x128 to improve upload speed to server
+* Image is passed to backend to forward propagate through model
+* Model classifies the image to either malignant or benign
+* Result is passed back through to the front end and displayed classification and confidence percentage
+
 Some drawbacks that limit performance:
 1. The free version of Render returns very slowly
 2. Due to time and resources, the model isn't as well trained as I would like to be
